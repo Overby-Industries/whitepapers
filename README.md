@@ -87,6 +87,22 @@ pdflatex overby-whitepaper.tex
 ```
 → Produces overby-whitepaper.pdf publishable to /whitepapers/.
 
+## ⚡ Auto-Publish PDFs to Releases, How to Use It
+- Commit your .tex files.
+   - Run:
+```bash
+git tag v1.0
+git push origin v1.0
+```
+- GitHub Actions will:
+   - Compile your .tex → PDFs.
+   - Generate a Release called v1.0.
+   - Attach your built PDFs as downloadable assets.
+
+Visitors will now see an official Release section:
+
+👉 “White Paper v1.0” with a Download PDF button.
+
 ## 📑 Citation & License
 
 Unless otherwise noted, all content is released under **Creative Commons Attribution 4.0**.  
