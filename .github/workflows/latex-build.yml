@@ -14,6 +14,8 @@ jobs:
       # Step 1: Check out repo
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 2: Install LaTeX
       - name: Install TeX Live & latexmk
@@ -21,18 +23,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y texlive-full latexmk
 
-      # Step 3: Build PDFs from .tex files in /whitepapers
+      # Step 3: Build PDFs from .tex in /whitepapers
       - name: Build PDF(s)
         run: |
-          mkdir -p build
+          mkdir -p whitepapers/dist
           for f in whitepapers/*.tex; do
             echo "Building $f..."
-            latexmk -pdf -interaction=nonstopmode -outdir=build $f
+            latexmk -pdf -interaction=nonstopmode -outdir=whitepapers/dist $f
           done
 
-      # Step 4: Upload artifacts (generated PDFs)
-      - name: Upload PDFs
-        uses: actions/upload-artifact@v3
-        with:
-          name: compiled-pdfs
-          path: build/*.pdf
+      # Step 4: Commit PDFs back into repo
+      - name: Commit built PDFs
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add whitepapers/dist/*.pdf
+          git commit -m "Automated PDF build from LaTeX" || echo "No changes to commit"
+          git push
