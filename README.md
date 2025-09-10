@@ -1,7 +1,8 @@
 # 📄 Overby Industries — White Papers
 
 [![License: CC BY-4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
-![Build Status](https://img.shields.io/badge/build-papers%20auto%20preview-green)
+![Build White Papers](https://github.com/Overby-Industries/whitepapers/actions/workflows/latex-build.yml/badge.svg)
+[![Latest PDFs](https://img.shields.io/badge/download-latest%20papers-blue)](https://github.com/Overby-Industries/whitepapers/tree/main/whitepapers/dist)
 ![Last Update](https://img.shields.io/github/last-commit/Overby-Industries/whitepapers)
 ![Repo Size](https://img.shields.io/github/repo-size/Overby-Industries/whitepapers)
 ![Contributors](https://img.shields.io/github/contributors/Overby-Industries/whitepapers)
