@@ -17,6 +17,7 @@ Overby Industries’ mission: **open, democratic space power & propulsion for �
 > Research, design, and technical vision documents for the Overby Industries propulsion and power ecosystem.
 
 ---
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Overby-Industries)](https://github.com/Overby-Industries/github-readme-stats)
 
 ## 📚 Purpose
 
