@@ -68,7 +68,15 @@ _Comprehensive abstract list lives in `/papers/README.md`._
 
 See `CONTRIBUTING.md` for detailed style & formatting rules.
 
----
+## 📄 White Paper LaTeX Template
+Located in templates/overby-whitepaper.tex:
+
+📌 Export via:
+
+```bash
+pdflatex overby-whitepaper.tex
+```
+→ Produces overby-whitepaper.pdf publishable to /whitepapers/.
 
 ## 📑 Citation & License
 
