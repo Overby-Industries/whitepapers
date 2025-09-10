@@ -1,0 +1,38 @@
+name: Release White Paper PDFs
+
+on:
+  push:
+    tags:
+      - 'v*'   # Runs when you push a tag like v1.0, v2.0, etc.
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install LaTeX
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full latexmk
+
+      # Build PDFs
+      - name: Build PDFs
+        run: |
+          mkdir -p build
+          for f in whitepapers/*.tex; do
+            latexmk -pdf -interaction=nonstopmode -outdir=build $f
+          done
+          ls -l build
+
+      # Create GitHub Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/*.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
