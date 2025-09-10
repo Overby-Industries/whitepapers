@@ -70,7 +70,7 @@ _Comprehensive abstract list lives in `/papers/README.md`._
 
 1. **Fork** the repo and create a feature branch:  
    `git checkout -b feat/my-white-paper`
-2. Copy the `templates/paper_template.md` (or `.tex`) into `/drafts/<descriptive_title>/`.
+2. Copy the `templates/overby-whitepaper.tex` into `/drafts/<descriptive_title>/`.
 3. Commit figures to `/figures/` and cite them relatively.
 4. Push & open a **Pull Request**. The CI will auto-build a preview PDF.
 5. Two maintainers + optional external reviewers approve → merge → paper is promoted to `/papers/` and assigned a DOI.
