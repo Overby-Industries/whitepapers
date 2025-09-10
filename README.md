@@ -2,7 +2,12 @@
 
 [![License: CC BY-4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 ![Build Status](https://img.shields.io/badge/build-papers%20auto%20preview-green)
-![Last Update](https://img.shields.io/github/last-commit/OverbyIndustries/white-papers)
+![Last Update](https://img.shields.io/github/last-commit/OverbyIndustries/whitepapers)
+![Repo Size](https://img.shields.io/github/repo-size/OverbyIndustries/whitepapers)
+![Contributors](https://img.shields.io/github/contributors/OverbyIndustries/whitepapers)
+![Issues](https://img.shields.io/github/issues-raw/OverbyIndustries/whitepapers)
+![Pull Requests](https://img.shields.io/github/issues-pr-raw/OverbyIndustries/whitepapers)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/OverbyIndustries/whitepapers)
 
 A dedicated home for peer-review-ready technical and policy white papers that advance  
 Overby Industries’ mission: **open, democratic space power & propulsion for “We the People of Earth.”**
