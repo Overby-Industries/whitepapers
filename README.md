@@ -62,46 +62,85 @@ white-papers/
 | 2024 | Solar-Wind Ion Capture for Unlimited ΔV | A. Doe, B. Rao | 🔄 In Review |
 | 2023 | Open Civic Aerospace: Governance Model | S. Lee | ✅ Published |
 
-_Comprehensive abstract list lives in `/papers/README.md`._
+_Comprehensive abstract list lives in `/whitepapers/README.md`._
 
 ---
 
 ## 📝 How to Contribute a Paper
 
-1. **Fork** the repo and create a feature branch:  
-   `git checkout -b feat/my-white-paper`
-2. Copy the `templates/overby-whitepaper.tex` into `/drafts/<descriptive_title>/`.
-3. Commit figures to `/figures/` and cite them relatively.
-4. Push & open a **Pull Request**. The CI will auto-build a preview PDF.
-5. Two maintainers + optional external reviewers approve → merge → paper is promoted to `/papers/` and assigned a DOI.
+We welcome contributions of new ideas, concepts, and technical papers.  
+Here’s the workflow:
 
-See `CONTRIBUTING.md` for detailed style & formatting rules.
-
+- **Fork this repo** and create a feature branch:
+```bash
+git checkout -b feat/my-white-paper
+```
+- Use the template:
+Copy templates/overby-whitepaper.tex into: `drafts/<descriptive-title>/`
+   - Work on your `.tex` file there.
+- Figures:
+   - Commit figures to `/figures/` and use relative paths for citations.
+   - (SVG or PDF preferred for clarity.)
+- Push your branch and open a Pull Request.
+   - The CI will build a preview PDF automatically.
+- Review/Approval:
+   - At least two maintainers (plus optional external reviewers) approve.
+- Promotion:
+   - Once accepted, your draft moves into `/whitepapers/` as source.
+   - From there, the CI pipeline will:
+      - Compile your `.tex` into PDF
+      - Auto‑publish it to the `dist/` folder
+      - Attach it to the latest GitHub Release
 ## 📄 White Paper LaTeX Template
-Located in templates/overby-whitepaper.tex:
+Located in `templates/overby-whitepaper.tex`.
 
-📌 Export via:
+Compile locally:
 
 ```bash
 pdflatex overby-whitepaper.tex
 ```
-→ Produces overby-whitepaper.pdf publishable to /whitepapers/.
+This produces a `.pdf` version, also auto‑built by CI/CD when pushed.
 
-## ⚡ Auto-Publish PDFs to Releases, How to Use It
-- Commit your .tex files.
-   - Run:
+## ⚡ Auto‑Publishing Flow
+There are two build triggers:
+
+- Normal Push:
+Every push/PR compiles `.tex` to `.pdf` in `/whitepapers/dist/` for preview.
+
+Example:
+
+![Build White Papers](https://github.com/Overby-Industries/whitepapers/actions/workflows/latex-build.yml/badge.svg)
+
+- Release Tag:
+Tag a commit to make an official release:
+
 ```bash
 git tag v1.0
 git push origin v1.0
 ```
-- GitHub Actions will:
-   - Compile your .tex → PDFs.
-   - Generate a Release called v1.0.
-   - Attach your built PDFs as downloadable assets.
+The workflow will:
+- Compile your LaTeX to PDF
+- Create a GitHub Release called v1.0
+- Attach compiled PDFs as downloadable assets
 
-Visitors will now see an official Release section:
+Visitors will now see an official:
 
-👉 “White Paper v1.0” with a Download PDF button.
+👉 “White Paper v1.0 — Download PDF” section here.
+
+## 📚 Paper Index
+The authoritative list of accepted/published white papers lives in:
+➡️ `/whitepapers/README.md`
+
+This index links both to:
+- Source (`.tex`) files
+- Compiled PDFs (either /whitepapers/dist/ or attached to the latest Release)
+
+Example entry:
+
+```markdown
+- **The MHD Power + Propulsion Architecture**  
+  [Source](mhd-generator.tex) · [Download PDF](../dist/mhd-generator.pdf)
+```
 
 ## 📑 Citation & License
 
