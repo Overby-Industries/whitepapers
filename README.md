@@ -17,8 +17,6 @@ Overby Industries’ mission: **open, democratic space power & propulsion for �
 > Research, design, and technical vision documents for the Overby Industries propulsion and power ecosystem.
 
 ---
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Overby-Industries)](https://github.com/Overby-Industries/github-readme-stats)
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Overby-Industries&layout=compact)](https://github.com/Overby-Industries/github-readme-stats)
 
 ## 📚 Purpose
 
@@ -148,11 +146,11 @@ Unless otherwise noted, all content is released under **Creative Commons Attribu
 To cite any paper:
 
 ```bibtex
-@techreport{overby2024mhd,
+@techreport{overby2025mhd,
   title     = {Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion},
-  author    = {Overby, J. and Collaborators},
+  author    = {Overby, K. and Collaborators},
   institution = {Overby Industries},
-  year      = {2024},
+  year      = {2025},
   doi       = {10.5281/zenodo.<placeholder>}
 }
 ```
@@ -168,7 +166,7 @@ We operate as a **planet-scale civic movement**. All contributors agree to uphol
 ## 📬 Contact
 
 • General inquiries: info@overbyindustries.space  
-• Technical lead (power & propulsion): propulsion@overbyindustries.space  
+• Technical lead (power & propulsion): founder@overbyindustries.space  
 • Website: https://overbyindustries.space  
 
 Let’s write the papers that power the engines that move humanity forward. 🌍🚀
