@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,8 +17,6 @@ jobs:
       # Step 1: Check out repo
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 2: Install LaTeX
       - name: Install TeX Live & latexmk
@@ -23,20 +24,27 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y texlive-full latexmk
 
-      # Step 3: Build PDFs from .tex in /whitepapers
+      # Step 3: Build PDFs from .tex sources in papers/ and drafts/
       - name: Build PDF(s)
         run: |
-          mkdir -p whitepapers/dist
-          for f in whitepapers/*.tex; do
+          mkdir -p dist
+          shopt -s nullglob globstar
+          files=(papers/**/*.tex drafts/**/*.tex)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No .tex sources found under papers/ or drafts/ yet — nothing to build."
+            exit 0
+          fi
+          for f in "${files[@]}"; do
             echo "Building $f..."
-            latexmk -pdf -interaction=nonstopmode -outdir=whitepapers/dist $f
+            latexmk -pdf -interaction=nonstopmode -outdir=dist "$f"
           done
 
-      # Step 4: Commit PDFs back into repo
+      # Step 4: Commit PDFs back into repo (push events only)
       - name: Commit built PDFs
+        if: github.event_name == 'push'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add whitepapers/dist/*.pdf
+          git add dist/*.pdf 2>/dev/null || true
           git commit -m "Automated PDF build from LaTeX" || echo "No changes to commit"
           git push

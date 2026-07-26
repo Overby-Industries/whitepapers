@@ -3,7 +3,7 @@
 [![License: CC BY-4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 ![Build White Papers](https://github.com/Overby-Industries/whitepapers/actions/workflows/latex-build.yml/badge.svg)
 [![Latest Release](https://img.shields.io/github/v/release/Overby-Industries/whitepapers)](https://github.com/Overby-Industries/whitepapers/releases)
-[![Latest PDFs](https://img.shields.io/badge/download-latest%20papers-blue)](https://github.com/Overby-Industries/whitepapers/tree/main/whitepapers/dist)
+[![Latest PDFs](https://img.shields.io/badge/download-latest%20papers-blue)](https://github.com/Overby-Industries/whitepapers/tree/main/dist)
 ![Last Update](https://img.shields.io/github/last-commit/Overby-Industries/whitepapers)
 ![Repo Size](https://img.shields.io/github/repo-size/Overby-Industries/whitepapers)
 ![Contributors](https://img.shields.io/github/contributors/Overby-Industries/whitepapers)
@@ -15,6 +15,8 @@ A dedicated home for peer-review-ready technical and policy white papers that ad
 Overby Industries’ mission: **open, democratic space power & propulsion for “We the People of Earth.”**
 > **Towards Open, Democratic Spaceflight**  
 > Research, design, and technical vision documents for the Overby Industries propulsion and power ecosystem.
+
+This repository is the technical/policy backbone referenced by the [Overby Industries PWA](https://github.com/Overby-Industries/overby-industries-pwa) and org profile: it's where the ISRU, zero-waste, and open-governance concepts described elsewhere get written up in full, citable detail.
 
 ---
 
@@ -37,18 +39,18 @@ Whether you are researching MHD ionic-liquid generators, atmosphere-breathing el
 Each paper is versioned and archived here with supporting material:
 
 ```
-white-papers/
-├── papers/          # Final, DOI-ready releases (PDF + source)
-│   ├── 2024_MHD_Ionic_Generator/
-│   └── ...
+whitepapers/
+├── papers/          # Final, DOI-ready releases (LaTeX source, one folder per paper)
+│   └── 2025-overby-industries-vision/
 ├── drafts/          # Active in-progress manuscripts
 ├── figures/         # Shared SVG/PNG figures & diagrams
 ├── templates/       # LaTeX / Markdown submission templates
 ├── references/      # BibTeX database, data sets, external links
-└── tools/           # Build scripts (Pandoc, LaTeX, CI preview)
+├── tools/           # Build scripts (Pandoc, LaTeX, CI preview)
+└── dist/            # CI-built PDFs (generated, not hand-edited)
 ```
 
-*Auto-rendering:* every push triggers GitHub Actions that compile LaTeX/Markdown into review-quality PDFs and post them in the relevant folder.
+*Auto-rendering:* every push triggers GitHub Actions that compiles the `.tex` sources under `papers/` and `drafts/` into review-quality PDFs in `dist/`.
 
 ---
 
@@ -56,11 +58,10 @@ white-papers/
 
 | Year | Title | Lead Author(s) | Status |
 |------|-------|----------------|--------|
-| 2025 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | K. Overby | ✅ Published |
-| 2024 | Solar-Wind Ion Capture for Unlimited ΔV | A. Doe, B. Rao | 🔄 In Review |
-| 2023 | Open Civic Aerospace: Governance Model | S. Lee | ✅ Published |
+| 2025 | Overby Industries: An Ethical, Zero-Waste Roadmap to Sustainable Space Industry | Overby Industries R&D Division | ✅ Published — [source](papers/2025-overby-industries-vision/overby-industries-vision.tex) |
+| 2025 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | K. Overby | 📝 Template only — [start here](templates/overby-whitepaper.tex) |
 
-_Comprehensive abstract list lives in `/whitepapers/README.md`._
+_Additional entries are added as papers move from `drafts/` into `papers/`._
 
 ---
 
@@ -84,7 +85,7 @@ Copy templates/overby-whitepaper.tex into: `drafts/<descriptive-title>/`
 - Review/Approval:
    - At least two maintainers (plus optional external reviewers) approve.
 - Promotion:
-   - Once accepted, your draft moves into `/whitepapers/` as source.
+   - Once accepted, your draft moves from `drafts/<title>/` into `papers/<title>/` as source.
    - From there, the CI pipeline will:
       - Compile your `.tex` into PDF
       - Auto‑publish it to the `dist/` folder
@@ -103,7 +104,7 @@ This produces a `.pdf` version, also auto‑built by CI/CD when pushed.
 There are two build triggers:
 
 - Normal Push:
-Every push/PR compiles `.tex` to `.pdf` in `/whitepapers/dist/` for preview.
+Every push/PR compiles `.tex` files under `papers/` and `drafts/` to `.pdf` in `/dist/` for preview.
 
 Example:
 
@@ -126,19 +127,11 @@ Visitors will now see an official:
 👉 “White Paper v1.0 — Download PDF” section here.
 
 ## 📚 Paper Index
-The authoritative list of accepted/published white papers lives in:
-➡️ `/whitepapers/README.md`
+The authoritative list of accepted/published white papers is the **Featured Papers** table above in this README.
 
-This index links both to:
-- Source (`.tex`) files
-- Compiled PDFs (either /whitepapers/dist/ or attached to the latest Release)
-
-Example entry:
-
-```markdown
-- **The MHD Power + Propulsion Architecture**  
-  [Source](mhd-generator.tex) · [Download PDF](../dist/mhd-generator.pdf)
-```
+Each entry links both to:
+- Source (`.tex`) files under `papers/<title>/`
+- Compiled PDFs (either `/dist/` or attached to the latest Release)
 
 ## 📑 Citation & License
 

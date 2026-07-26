@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'   # Runs when you push a tag like v1.0, v2.0, etc.
 
+permissions:
+  contents: write
+
 jobs:
   build-release:
     runs-on: ubuntu-latest
@@ -24,8 +27,14 @@ jobs:
       - name: Build PDFs
         run: |
           mkdir -p build
-          for f in whitepapers/*.tex; do
-            latexmk -pdf -interaction=nonstopmode -outdir=build $f
+          shopt -s nullglob globstar
+          files=(papers/**/*.tex)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No published papers under papers/ yet — nothing to release."
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            latexmk -pdf -interaction=nonstopmode -outdir=build "$f"
           done
           ls -l build
 
