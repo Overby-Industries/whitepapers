@@ -1,0 +1,195 @@
+% Overby Industries White Paper
+% Source: converted from mhd-power-propulsion.md
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{longtable}
+
+% Page setup
+\geometry{margin=1in}
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0em}
+
+% Header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Overby Industries White Paper}
+\fancyhead[R]{\thepage}
+
+% Title formatting
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Hyperlinks style
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% Title Info
+\title{
+    \Huge \textbf{Overby Industries} \\[0.5em]
+    \Large Magnetohydrodynamic Ionic-Liquid Generator \& Dual-Mode Propulsion \\[1em]
+    {\large Version 0.1 -- Draft for Community Review}
+}
+\author{Overby Industries R\&D Division}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+This paper lays out the physics basis and first-order engineering sizing for the Overby Industries power-and-propulsion core: a magnetohydrodynamic (MHD) channel that operates in two modes -- as a generator that harvests electrical power from a flowing conductive plasma, and as a Lorentz-force accelerator that uses the same hardware to produce thrust. It is paired with dual-mode ion propulsion (Air-Breathing Electric Propulsion in atmosphere, electrospray of ionic liquids in vacuum) and a solar-wind collector for continuous trickle charging. This document is deliberately conservative: every number given is a benchtop-scale target or an order-of-magnitude estimate, not a performance claim for a flight system. The companion repository, \href{https://github.com/Overby-Industries/power-and-propulsion}{\texttt{power-and-propulsion}}, implements these equations as a small C++ sizing library and a finite-state-machine control architecture for the flight/embedded side.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Why One Core Does Two Jobs}
+A conductive fluid (plasma, or vapor from an ionic liquid) moving through a magnetic field experiences a motional EMF. Run current out of that field through electrodes, and you have a generator. Reverse the sign -- push current into the channel instead of taking it out -- and the same $J \times B$ force that resisted the flow now accelerates it. That is the whole idea: one duct, one set of coils, two modes, switched electronically rather than mechanically.
+
+\begin{itemize}
+    \item \textbf{Generator mode:} captured solar wind plasma or seeded ionic-liquid vapor flows through the channel; Faraday/Hall electrodes pull current into a DC bus that charges graphene supercapacitors and an aluminum-ion battery/thermal tank.
+    \item \textbf{Thruster mode:} the DC bus drives current back through the channel; the resulting Lorentz body force accelerates the working fluid out a magnetic/fluid nozzle for thrust.
+\end{itemize}
+
+\section{Operating Medium}
+\begin{itemize}
+    \item \textbf{Working fluids:} seeded noble gas (Ar/Xe/Kr), or vaporized ionic-liquid fragments (e.g. EMIM-BF4, or EMIM-AlCl4 from an AlCl3--EMIMCl eutectic). Small alkali seed fractions (K/Cs) raise plasma conductivity.
+    \item \textbf{Benchtop targets:} electron density $n_e \sim 10^{17}$--$10^{19}\,\text{m}^{-3}$, electron temperature $T_e \sim 1$--$5\,\text{eV}$, plasma conductivity $\sigma \sim 10^{2}$--$10^{3}\,\text{S/m}$ (higher with seeding/heating).
+    \item \textbf{Magnetic field:} $B \sim 0.5$--$3\,\text{T}$. Copper coils for early prototypes; REBCO high-temperature-superconducting tape at 20--40~K for later stages, to reach 1--5~T with lower $I^2R$ loss.
+    \item \textbf{Channel scale:} height 1--5~cm, width 5--15~cm, length 20--80~cm for a benchtop core.
+\end{itemize}
+
+\section{Creating the Plasma}
+\begin{itemize}
+    \item \textbf{RF helicon or ECR stage:} couples RF/microwave power into a neutral gas flow inside a short quartz/Al$_2$O$_3$ tube. A modest solenoidal field (0.05--0.2~T) improves coupling and uniformity.
+    \item \textbf{Alternative:} DC arc or pulsed inductive discharge for high-conductivity bursts feeding the MHD duct.
+    \item Gas handling runs closed-loop with a condenser for ionic-liquid vapor recovery, and a getter bed to scrub oxygen/water when running in ABEP (air-breathing) mode.
+\end{itemize}
+
+\section{Generator Mode -- The Physics}
+For a conductive fluid with bulk velocity $\mathbf{v}$ through a transverse field $\mathbf{B}$, the motional EMF is (Faraday's law):
+\[
+\mathbf{E}_{\text{ind}} = \mathbf{v} \times \mathbf{B}
+\]
+and the current density in the channel, including the Hall term, is:
+\[
+\mathbf{J} = \sigma \left( \mathbf{E} + \mathbf{v} \times \mathbf{B} - \frac{1}{n_e e} \mathbf{J} \times \mathbf{B} \right)
+\]
+The last term is the Hall effect: it deflects current sideways in the channel and has to be designed around, not ignored. Net extracted power is $P = \int \mathbf{J} \cdot \mathbf{E} \, dV$.
+
+Two electrode topologies:
+\begin{itemize}
+    \item \textbf{Faraday generator:} continuous electrodes span the duct height and collect the EMF directly. Needs Hall short-circuit mitigation -- insulating sidewalls or guard electrodes -- or the Hall current just shorts itself out along the wall.
+    \item \textbf{Hall generator:} short, segmented electrode pairs alternate along the flow direction, aligned with the Hall field. Easier current control at high Hall parameter.
+\end{itemize}
+
+\subsection{Non-dimensional Design Groups}
+These three numbers are what you actually use to pick channel length, field strength, and flow velocity -- not the raw equations above ($\mu$ is dynamic viscosity, $\mu_0$ the permeability of free space, $\rho$ the fluid density, $L$ the channel length):
+
+\begin{longtable}{p{3.4cm} p{4.2cm} p{2cm} p{4.4cm}}
+\textbf{Group} & \textbf{Definition} & \textbf{Target} & \textbf{What it tells you} \\
+\hline
+\endhead
+Hartmann number & $Ha = BL\sqrt{\sigma/\mu}$ & $Ha \gg 1$ & Field dominance over viscous flow -- want this high for real MHD control authority. \\
+Interaction parameter & $N = \sigma B^2 L / (\rho v)$ & $N \sim 1$--$10$ & Conversion efficiency without choking the flow. \\
+Magnetic Reynolds number & $Rm = \mu_0 \sigma v L$ & $Rm \ll 1$ & Whether $B$ can be treated as externally imposed or the plasma's self-field matters. \\
+\end{longtable}
+
+\subsection{Electrode Hardware}
+Graphite/SiC-coated electrodes, or liquid-metal (GaInSn) electrodes for higher current density (1--20~A/cm$^2$) with less erosion. Output is rectified into the DC link feeding the supercapacitor and battery bus.
+
+\section{Thruster Mode -- Switching to Accelerate}
+Reconfigure the power electronics so the DC link drives current into the duct instead of pulling it out. The body force density on the plasma is:
+\[
+\mathbf{f} = \mathbf{J} \times \mathbf{B}
+\]
+which accelerates the fluid axially out the channel. A magnetic or fluid nozzle then expands it:
+\begin{itemize}
+    \item Electrothermal + MHD hybrid: throat-to-exit area ratio 1:3--1:7.
+    \item Pure Lorentz acceleration: shape the magnetic nozzle's field gradient ($dB/dz$) to minimize plasma detachment losses at the exit.
+\end{itemize}
+
+\subsection{Dual-mode Intake Paths Feeding the Same Channel}
+\begin{itemize}
+    \item \textbf{ABEP (Air-Breathing Electric Propulsion):} an intake scoop and pre-ionizer harvest residual atmosphere in LEO/VLEO. The MHD channel runs in accelerator mode to overcome intake drag and ionization losses.
+    \item \textbf{Electrospray:} porous/needle emitters draw from ionic-liquid tanks (EMI-BF4, EMI-AlCl4), producing droplet/ion beams. Supercapacitor pulses handle beam neutralization and short thrust spikes, or feed seed mass into the MHD accelerator.
+\end{itemize}
+
+\section{Solar Wind Capture -- What It Is Actually Good For}
+An electrostatic or mini-magnetospheric collector slows incoming charged particles, doing work on the collector. At 1~AU, realistic solar wind parameters are $n \approx 3$--$10\,\text{cm}^{-3}$, $v \approx 400\,\text{km/s}$, giving a dynamic pressure of roughly 1--3~nPa. That works out to available power densities in the \textbf{nanowatt-to-microwatt per square meter} range unless the collector area is very large.
+
+This is worth stating plainly: solar wind capture is a slow, continuous trickle-charge source for the bus, not primary propulsion power and not a source of ``free'' or ``near-infinite'' delta-V. It supplements the battery/supercapacitor bank between active burns; it does not replace them.
+
+\section{Thermal and Structural Integration}
+\begin{itemize}
+    \item \textbf{Ionic-liquid tanks double as thermal mass.} Hot dielectric coolant loops through battery jackets; the high heat capacity (and in some formulations, phase-change behavior) of ionic liquids buffers pulse loads on the order of 10--50~kJ/kg.
+    \item \textbf{Magnets:} copper for early benchtop prototypes; REBCO HTS tape at 20--40~K for later stages.
+    \item \textbf{Structural liner:} SiC or Si$_3$N$_4$. \textbf{Insulating coatings:} YSZ or BN.
+\end{itemize}
+
+\section{System Architecture}
+\begin{verbatim}
+ [Solar Arrays]        [Solar Wind Collector]
+       |                        |
+       v                        v
+ +---------------------------------+
+ |     DC Link / Power Mgmt        |<---->[Graphene Supercapacitors]
+ |     (MPPT, rectifiers)          |<---->[Al-ion Battery / Thermal Tank]
+ +---------------------------------+
+       ^                        |
+       |  (bidirectional)       v
+ +-----------------------------------+
+ |            MHD Core                |<-- Pre-ionizer (RF/ECR/Arc)
+ |  Mode A: Generator  --> DC Link    |
+ |  Mode B: Thruster   <-- DC Link    |
+ +-----------------------------------+
+                  |
+          Magnetic / Fluid Nozzle
+                  |
+      +-----------+------------------+
+      | ABEP Inlet (LEO/VLEO)        |  Electrospray Emitter (ionic-liquid)
+      +-----------+------------------+
+                  v
+                Thrust
+\end{verbatim}
+
+The interactive Mermaid version of this diagram, and the code that implements it, live in the \href{https://github.com/Overby-Industries/power-and-propulsion}{\texttt{power-and-propulsion}} repository -- this paper is the physics reference that code implements against, not a separate parallel design.
+
+\section{Testing Roadmap}
+\begin{longtable}{p{2.6cm} p{4.8cm} p{6.2cm}}
+\textbf{Phase} & \textbf{Focus} & \textbf{Deliverable} \\
+\hline
+\endhead
+I -- Simulation & Python/MATLAB or the C++ sizing models in \texttt{power-and-propulsion/sim} validate the non-dimensional groups against target channel geometry before any hardware is cut. & Validated parameter envelope ($B$, $L$, $v$, $\sigma$) for a benchtop core. \\
+II -- Benchtop & Ionic-liquid/plasma vortex chamber at low power; measure achieved $\sigma$, $Ha$, $N$ against simulation. & Benchtop MHD generator demonstrating net positive electrical extraction. \\
+III -- Vacuum chamber & Full accelerator-mode test in a vacuum chamber; measure thrust, specific impulse, and mode-switching transient behavior. & Characterized thrust curve and switching latency. \\
+IV -- CubeSat demo & Unmanned orbital demonstrator combining generator trickle-charge, ABEP intake, and electrospray thrust. & On-orbit validation of dual-mode operation. \\
+\end{longtable}
+
+\section{Conclusion}
+None of the individual pieces here are new physics -- MHD generators, Hall thrusters, electrospray propulsion, and solar wind collection are each independently studied and, in several cases, flight-proven in isolation (see the companion \href{https://github.com/Overby-Industries}{organization README} for the point-by-point comparison against NASA/ESA precedent). What Overby Industries is proposing is the integration: one channel, one set of coils, switched between generation and thrust, so the same hardware mass does two jobs across a mission profile instead of one. This paper -- and the \texttt{power-and-propulsion} codebase it is paired with -- exists so that integration can be reviewed, criticized, and improved in the open before any hardware gets built.
+
+\section{References}
+[1] Sutton, G. W., \& Sherman, A. \textit{Engineering Magnetohydrodynamics.} McGraw-Hill, 1965. (Standard reference for the Hartmann number, interaction parameter, and Faraday/Hall generator topologies used in Section 4.) \\
+[2] Janhunen, P. ``Electric sail for spacecraft propulsion.'' \textit{Journal of Propulsion and Power}, 2004. \\
+[3] NASA Innovative Advanced Concepts (NIAC) -- Magnetosail / Electric Sail studies. \\
+[4] Placeholder for additional academic references -- open for community submission. \\
+[5] Placeholder for community submissions.
+
+\end{document}

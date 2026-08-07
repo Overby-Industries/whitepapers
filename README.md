@@ -59,7 +59,7 @@ whitepapers/
 | Year | Title | Lead Author(s) | Status |
 |------|-------|----------------|--------|
 | 2025 | Overby Industries: An Ethical, Zero-Waste Roadmap to Sustainable Space Industry | Overby Industries R&D Division | ✅ Published — [source](papers/2025-overby-industries-vision/overby-industries-vision.tex) |
-| 2025 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | K. Overby | 📝 Template only — [start here](templates/overby-whitepaper.tex) |
+| 2026 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | Overby Industries R&D Division | 📝 Draft v0.1 — [source](papers/2026-mhd-power-propulsion/mhd-power-propulsion.tex) — implemented in [`power-and-propulsion`](https://github.com/Overby-Industries/power-and-propulsion) |
 
 _Additional entries are added as papers move from `drafts/` into `papers/`._
 
@@ -139,11 +139,12 @@ Unless otherwise noted, all content is released under **Creative Commons Attribu
 To cite any paper:
 
 ```bibtex
-@techreport{overby2025mhd,
+@techreport{overby2026mhd,
   title     = {Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion},
-  author    = {Overby, K. and Collaborators},
+  author    = {{Overby Industries R\&D Division}},
   institution = {Overby Industries},
-  year      = {2025},
+  year      = {2026},
+  note      = {Draft v0.1},
   doi       = {10.5281/zenodo.<placeholder>}
 }
 ```
