@@ -18,10 +18,18 @@ jobs:
         uses: actions/checkout@v3
 
       # Install LaTeX
+      # NOTE: texlive-full (~6-8GB) previously used here regularly ran the
+      # GitHub-hosted runner low on disk during the first real compile. We
+      # only use a handful of packages, so install a targeted scheme instead.
       - name: Install TeX Live
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full latexmk
+          sudo apt-get install -y \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latexmk
 
       # Build PDFs
       - name: Build PDFs
@@ -34,9 +42,17 @@ jobs:
             exit 1
           fi
           for f in "${files[@]}"; do
-            latexmk -pdf -interaction=nonstopmode -outdir=build "$f"
+            latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build "$f"
           done
           ls -l build
+
+      - name: Show LaTeX logs on failure
+        if: failure()
+        run: |
+          for log in build/*.log; do
+            echo "===== $log ====="
+            cat "$log"
+          done
 
       # Create GitHub Release
       - name: Create Release

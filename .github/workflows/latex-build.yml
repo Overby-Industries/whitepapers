@@ -19,10 +19,20 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Install LaTeX
+      # NOTE: texlive-full (~6-8GB) previously used here regularly ran the
+      # GitHub-hosted runner low on disk once fonts/format caches were built
+      # during the first real compile, failing this step with no useful error
+      # surfaced. We only use a handful of packages, so install a targeted
+      # scheme instead — smaller, faster, and reliable.
       - name: Install TeX Live & latexmk
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full latexmk
+          sudo apt-get install -y \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latexmk
 
       # Step 3: Build PDFs from .tex sources in papers/ and drafts/
       - name: Build PDF(s)
@@ -36,7 +46,18 @@ jobs:
           fi
           for f in "${files[@]}"; do
             echo "Building $f..."
-            latexmk -pdf -interaction=nonstopmode -outdir=dist "$f"
+            latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=dist "$f"
+          done
+
+      # Step 3b: Surface the LaTeX log if the build failed — latexmk's exit
+      # status alone doesn't say why, so print the log directly in the Actions
+      # tab instead of leaving a blind "failure".
+      - name: Show LaTeX logs on failure
+        if: failure()
+        run: |
+          for log in dist/*.log; do
+            echo "===== $log ====="
+            cat "$log"
           done
 
       # Step 4: Commit PDFs back into repo (push events only)
