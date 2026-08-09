@@ -1,4 +1,4 @@
-# 📄 Overby Industries — White Papers
+# Overby Industries — White Papers
 
 [![License: CC BY-4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 ![Build White Papers](https://github.com/Overby-Industries/whitepapers/actions/workflows/latex-build.yml/badge.svg)
@@ -20,7 +20,7 @@ This repository is the technical/policy backbone referenced by the [Overby Indus
 
 ---
 
-## 📚 Purpose
+## Purpose
 
 This repository is the **public library** of Overby Industries' official white papers and research documents.  
 It serves as both a technical archive and a civic declaration of our commitment to **planetary-scale power, propulsion, and freedom in space**.
@@ -35,7 +35,7 @@ Whether you are researching MHD ionic-liquid generators, atmosphere-breathing el
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 Each paper is versioned and archived here with supporting material:
 
 ```
@@ -54,18 +54,18 @@ whitepapers/
 
 ---
 
-## 🚀 Featured Papers (Index)
+## Featured Papers (Index)
 
 | Year | Title | Lead Author(s) | Status |
 |------|-------|----------------|--------|
-| 2025 | Overby Industries: An Ethical, Zero-Waste Roadmap to Sustainable Space Industry | Overby Industries R&D Division | ✅ Published — [source](papers/2025-overby-industries-vision/overby-industries-vision.tex) |
-| 2026 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | Overby Industries R&D Division | 📝 Draft v0.1 — [source](papers/2026-mhd-power-propulsion/mhd-power-propulsion.tex) — implemented in [`power-and-propulsion`](https://github.com/Overby-Industries/power-and-propulsion) |
+| 2025 | Overby Industries: An Ethical, Zero-Waste Roadmap to Sustainable Space Industry | Overby Industries R&D Division | Published — [source](papers/2025-overby-industries-vision/overby-industries-vision.tex) |
+| 2026 | Magnetohydrodynamic Ionic-Liquid Generator & Dual-Mode Propulsion | Overby Industries R&D Division | Draft v0.1 — [source](papers/2026-mhd-power-propulsion/mhd-power-propulsion.tex) — implemented in [`power-and-propulsion`](https://github.com/Overby-Industries/power-and-propulsion) |
 
 _Additional entries are added as papers move from `drafts/` into `papers/`._
 
 ---
 
-## 📝 How to Contribute a Paper
+## How to Contribute a Paper
 
 We welcome contributions of new ideas, concepts, and technical papers.  
 Here’s the workflow:
@@ -90,7 +90,7 @@ Copy templates/overby-whitepaper.tex into: `drafts/<descriptive-title>/`
       - Compile your `.tex` into PDF
       - Auto‑publish it to the `dist/` folder
       - Attach it to the latest GitHub Release
-## 📄 White Paper LaTeX Template
+## White Paper LaTeX Template
 Located in `templates/overby-whitepaper.tex`.
 
 Compile locally:
@@ -100,7 +100,7 @@ pdflatex overby-whitepaper.tex
 ```
 This produces a `.pdf` version, also auto‑built by CI/CD when pushed.
 
-## ⚡ Auto‑Publishing Flow
+## Auto‑Publishing Flow
 There are two build triggers:
 
 - Normal Push:
@@ -124,16 +124,16 @@ The workflow will:
 
 Visitors will now see an official:
 
-👉 “White Paper v1.0 — Download PDF” section here.
+“White Paper v1.0 — Download PDF” section here.
 
-## 📚 Paper Index
+## Paper Index
 The authoritative list of accepted/published white papers is the **Featured Papers** table above in this README.
 
 Each entry links both to:
 - Source (`.tex`) files under `papers/<title>/`
 - Compiled PDFs (either `/dist/` or attached to the latest Release)
 
-## 📑 Citation & License
+## Citation & License
 
 Unless otherwise noted, all content is released under **Creative Commons Attribution 4.0**.  
 To cite any paper:
@@ -151,16 +151,16 @@ To cite any paper:
 
 ---
 
-## 🤝 Code of Conduct
+## Code of Conduct
 
 We operate as a **planet-scale civic movement**. All contributors agree to uphold a welcoming, inclusive environment. See `CODE_OF_CONDUCT.md`.
 
 ---
 
-## 📬 Contact
+## Contact
 
 • General inquiries: info@overbyindustries.space  
 • Technical lead (power & propulsion): founder@overbyindustries.space  
 • Website: https://overbyindustries.space  
 
-Let’s write the papers that power the engines that move humanity forward. 🌍🚀
+Let’s write the papers that power the engines that move humanity forward.
