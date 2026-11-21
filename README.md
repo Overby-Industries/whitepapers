@@ -77,6 +77,10 @@ git checkout -b feat/my-white-paper
 - Use the template:
 Copy templates/overby-whitepaper.tex into: `drafts/<descriptive-title>/`
    - Work on your `.tex` file there.
+- Or write in Markdown, as the published papers do:
+   - Put `<name>.md` in `drafts/<descriptive-title>/` following the shape of the existing papers.
+   - Run `tools/md2tex.sh drafts/<descriptive-title>/<name>.md` (needs [pandoc](https://pandoc.org/)) to generate the `<name>.tex` that CI compiles, and commit both. Regenerate after every edit to the Markdown.
+   - Keep to ASCII and em dashes in the text: arrows and mathematical symbols are not available to `pdflatex` without extra packages and would fail the CI build.
 - Figures:
    - Commit figures to `/figures/` and use relative paths for citations.
    - (SVG or PDF preferred for clarity.)
