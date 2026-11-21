@@ -1,0 +1,15 @@
+% Overby Industries white paper style, for tools/md2tex.sh.
+% Matches the preamble of templates/overby-whitepaper.tex: running header,
+% bold section titles, blue links.
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{array}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Overby Industries White Paper}
+\fancyhead[R]{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
